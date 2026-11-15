@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Smart Krishi - climate-smart farming insights and tools.">
+  <title>Smart Krishi</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+<!-- NAVBAR -->
+  <div class="navbar">
+    <div class="logo">🌱 Smart Krishi</div>
+
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#climate-dashboard">Climate</a>
+      <a href="#crops">Crop Advisor</a>
+      <a href="#water-management">Water</a>
+      <a href="#satellite-monitoring">Satellite</a>
+      <a href="#about">About</a>
+    </nav>
+
+    <button class="nav-btn"
+      onclick="document.getElementById('climate-dashboard').scrollIntoView({behavior:'smooth'})">
+      Get Started
+    </button>
+  </div>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="home">
+
+    <div class="hero-content">
+      <span class="tag">🌍 CLIMATE SMART AGRICULTURE</span>
+
+      <h1>
+        Smarter Farming.<br>
+        <span>Better Tomorrow.</span>
+      </h1>
+
+      <p>
+        Empowering farmers with satellite-based climate insights,
+        smart crop recommendations and sustainable water management.
+      </p>
+
+      <div class="location-box">
+        <label for="location">Select your location</label>
+
+        <select id="location">
+          <option value="Coimbatore">Coimbatore, Tamil Nadu</option>
+          <option value="Chennai">Chennai, Tamil Nadu</option>
+          <option value="Madurai">Madurai, Tamil Nadu</option>
+          <option value="Erode">Erode, Tamil Nadu</option>
+          <option value="Salem">Salem, Tamil Nadu</option>
+          <option value="Namakkal">Namakkal, Tamil Nadu</option>
+        </select>
+
+        <button onclick="exploreFarm()">Explore My Farm →</button>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <div class="image-card">
+        <div class="image-icon">🌾</div>
+        <h3>Grow with Nature</h3>
+        <p>Data-driven farming decisions</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- OUR SOLUTIONS -->
+  <section class="features" id="climate">
+
+    <div class="section-heading">
+      <span>OUR SOLUTIONS</span>
+      <h2>Technology for Every Farmer</h2>
+      <p>Making climate information simple and useful.</p>
+    </div>
+
+    <div class="cards">
+
+      <div class="card" onclick="openFeature('climate')">
+        <div class="card-icon">🌦️</div>
+        <h3>Climate Insights</h3>
+        <p>Understand rainfall, temperature and changing climate patterns.</p>
+        <span class="feature-link">Explore Climate →</span>
+      </div>
+
+      <div class="card" onclick="openFeature('crops')">
+        <div class="card-icon">🌱</div>
+        <h3>Crop Recommendation</h3>
+        <p>Discover suitable crop options based on environmental conditions.</p>
+        <span class="feature-link">Explore Crops →</span>
+      </div>
+
+      <div class="card" onclick="openFeature('water')">
+        <div class="card-icon">💧</div>
+        <h3>Water Management</h3>
+        <p>Understand weather conditions and make informed irrigation decisions.</p>
+        <span class="feature-link">Explore Water Management →</span>
+      </div>
+
+      <div class="card" onclick="openFeature('satellite')">
+        <div class="card-icon">🛰️</div>
+        <h3>Satellite Monitoring</h3>
+        <p>Explore satellite-based environmental observations.</p>
+        <span class="feature-link">Explore Satellite Data →</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CLIMATE DASHBOARD -->
+  <section id="climate-dashboard" class="climate-dashboard">
+
+    <div class="dashboard-heading">
+      <span>🌱 SMART KRISHI / CLIMATE</span>
+      <h1>Climate Dashboard</h1>
+      <p>Live weather information and climate insights for smarter farming decisions.</p>
+    </div>
+
+    <div class="location-bar">
+      <label for="farm-location">📍 Select Farm Location</label>
+
+      <select id="farm-location">
+        <option value="Salem">Salem, Tamil Nadu</option>
+        <option value="Erode">Erode, Tamil Nadu</option>
+        <option value="Coimbatore">Coimbatore, Tamil Nadu</option>
+        <option value="Chennai">Chennai, Tamil Nadu</option>
+        <option value="Madurai">Madurai, Tamil Nadu</option>
+        <option value="Namakkal">Namakkal, Tamil Nadu</option>
+      </select>
+
+      <button id="weather-btn">Get Weather</button>
+    </div>
+
+    <!-- WEATHER CARDS -->
+    <div class="weather-grid">
+
+      <div class="weather-card">
+        <span>☀️</span>
+        <h3>Solar Radiation</h3>
+        <h2 id="solar">-- W/m²</h2>
+        <p>Current solar radiation</p>
+      </div>
+
+      <div class="weather-card">
+        <span>🌡️</span>
+        <h3>Temperature</h3>
+        <h2 id="temperature">-- °C</h2>
+        <p>Current temperature</p>
+      </div>
+
+      <div class="weather-card">
+        <span>💧</span>
+        <h3>Humidity</h3>
+        <h2 id="humidity">-- %</h2>
+        <p>Air moisture</p>
+      </div>
+
+      <div class="weather-card">
+        <span>🌬️</span>
+        <h3>Wind Speed</h3>
+        <h2 id="wind">-- km/h</h2>
+        <p>Current wind speed</p>
+      </div>
+
+      <div class="weather-card">
+        <span>🌧️</span>
+        <h3>Rainfall</h3>
+        <h2 id="rainfall">-- mm</h2>
+        <p>Current precipitation</p>
+      </div>
+
+    </div>
+
+    <!-- WEATHER CONDITIONS -->
+    <div class="weather-status">
+      <h2>🌤️ Weather Conditions</h2>
+
+      <p id="weather-description">
+        Select your location to view weather information.
+      </p>
+
+      <p id="last-updated">Waiting for weather data...</p>
+    </div>
+
+    <!-- CLIMATE HISTORY -->
+    <div class="forecast-section">
+      <h2>🛰️ Recent 7-Day Climate History</h2>
+
+      <div id="forecast-grid" class="forecast-grid">
+        <p>Recent climate data will appear here.</p>
+      </div>
+    </div>
+
+    <!-- FARMING ALERTS -->
+    <div class="alerts-section" id="farming-alerts">
+      <h2>⚠️ Farming Alerts</h2>
+
+      <div id="farming-alerts-content">
+        <p>Weather-based farming alerts will appear here.</p>
+      </div>
+    </div>
+
+    <!-- FARMING TIP -->
+    <div class="farming-tip">
+      <h2>🌿 Smart Farming Tip</h2>
+
+      <p id="farming-tip-text">
+        Stay updated with local weather conditions before planning farm activities.
+      </p>
+    </div>
+
+    <p id="weather-error" role="alert"></p>
+
+  </section>
+
+  <!-- CROP ADVISOR -->
+  <section class="crop-advisor" id="crops">
+
+    <div class="crop-heading">
+      <span>🌾 SMART KRISHI / CROP ADVISOR</span>
+
+      <h1>Find the Right Crop for Your Farm</h1>
+
+      <p>
+        Discover crop options based on your location,
+        season, soil and water availability.
+      </p>
+    </div>
+
+    <div class="crop-form">
+
+      <h2>🌱 Tell Us About Your Farm</h2>
+
+      <div class="crop-input-group">
+        <label>📍 Your Location</label>
+        <p id="crop-location">Coimbatore, Tamil Nadu</p>
+        <small>Automatically selected from your Climate Dashboard.</small>
+      </div>
+
+      <div class="crop-input-group">
+        <label for="crop-season">🌤️ Select Farming Season</label>
+
+        <select id="crop-season">
+          <option value="Kuruvai">Kuruvai (June – September)</option>
+          <option value="Samba">Samba (August – January)</option>
+          <option value="Thaladi">Thaladi (September – February)</option>
+          <option value="Navarai">Navarai (December – March)</option>
+          <option value="Summer">Summer Season</option>
+        </select>
+      </div>
+
+      <div class="crop-input-group">
+        <label for="soil-type">🌍 Select Soil Type</label>
+
+        <select id="soil-type">
+          <option value="">Choose soil type</option>
+          <option value="Red">Red Soil</option>
+          <option value="Black">Black Soil</option>
+          <option value="Alluvial">Alluvial Soil</option>
+          <option value="Sandy">Sandy Soil</option>
+          <option value="Clay">Clay Soil</option>
+        </select>
+      </div>
+
+      <div class="crop-input-group">
+        <label for="water-availability">💧 Water Availability</label>
+
+        <select id="water-availability">
+          <option value="">Choose water availability</option>
+          <option value="High">High – Canal / Assured Irrigation</option>
+          <option value="Medium">Medium – Borewell / Limited Irrigation</option>
+          <option value="Low">Low – Mainly Rainfed</option>
+        </select>
+      </div>
+
+      <button type="button" onclick="recommendCrops()">
+        🌾 Recommend Crops
+      </button>
+
+    </div>
+
+    <!-- CROP RESULTS -->
+    <div class="crop-results" id="crop-results">
+
+      <h2>🌿 Recommended Crops</h2>
+
+      <p id="crop-message">
+        Enter your farm details and click Recommend Crops to see suitable options.
+      </p>
+
+      <div id="weather-crop-advisory" class="weather-crop-advisory">
+        <h3>🌦️ Live Weather Advisory</h3>
+
+        <p id="crop-weather-message">
+          Weather information will appear here after loading.
+        </p>
+      </div>
+
+      <div id="crop-list" class="crop-list"></div>
+
+    </div>
+
+  </section>
+
+  <!-- WATER MANAGEMENT SECTION -->
+  <section class="water-section" id="water-management">
+
+    <div class="section-heading">
+      <span>💧 SMART KRISHI / WATER</span>
+      <h2>Smart Water Management</h2>
+      <p>Make better irrigation decisions using local weather conditions.</p>
+    </div>
+
+    <div class="water-content">
+
+      <div class="water-card">
+        <span>🌧️</span>
+        <h3>Rainfall Monitoring</h3>
+        <p>Monitor recent precipitation before irrigating your crops.</p>
+        <strong id="water-rainfall">Waiting for weather data...</strong>
+      </div>
+
+      <div class="water-card">
+        <span>🌡️</span>
+        <h3>Temperature Monitoring</h3>
+        <p>Understand how temperature can influence crop water requirements.</p>
+        <strong id="water-temperature">Waiting for weather data...</strong>
+      </div>
+
+      <div class="water-card">
+        <span>💧</span>
+        <h3>Irrigation Guidance</h3>
+        <p id="irrigation-advice">
+          Weather-based irrigation guidance will appear here.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- WELCOME SECTION -->
+  <section class="location-section" id="welcome">
+
+    <span>YOUR FARM, YOUR FUTURE</span>
+
+    <h2 id="selected-location">
+      Welcome, Coimbatore Farmer!
+    </h2>
+
+    <p>Your climate-smart farming journey starts here.</p>
+
+    <p class="note">
+      Your farming insights are based on the selected location.
+    </p>
+
+  </section>
+
+  <!-- SATELLITE MONITORING -->
+  <section class="satellite-section" id="satellite-monitoring">
+
+    <div class="section-heading">
+      <span>🛰️ SMART KRISHI / SATELLITE</span>
+
+      <h2>Satellite Monitoring</h2>
+
+      <p>
+        Explore satellite imagery of your farmland and nearby areas.
+      </p>
+    </div>
+
+    <div class="satellite-content">
+
+      <h3>🛰️ Farm Satellite Map</h3>
+
+      <p>
+        Search for your farm location or use your device location to view the area.
+      </p>
+
+      <div class="satellite-map-controls">
+
+        <input
+          type="text"
+          id="satellite-location-input"
+          placeholder="Enter village, town or farm location"
+          aria-label="Search farm location"
+        >
+
+        <button type="button" id="satellite-search-button">
+          Search Location
+        </button>
+
+        <button type="button" id="satellite-geolocation-button">
+          Use My Location
+        </button>
+
+        <button type="button" id="satellite-view-toggle">
+          Switch to Street View
+        </button>
+
+      </div>
+
+      <p id="satellite-status" role="status">
+        Loading satellite map...
+      </p>
+
+      <div id="satelliteMap" aria-label="Interactive satellite map"></div>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="about">
+
+    <h3>🌱 Smart Krishi</h3>
+
+    <p>Building a climate-resilient future for agriculture.</p>
+
+    <p>© 2026 Smart Krishi | Hackathon Project</p>
+
+  </footer>
+
+  <!-- Leaflet Map JavaScript -->
+
+
+  <!-- Your Main JavaScript -->
+
+
+  <!-- Satellite Map JavaScript -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
